@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Queue Instances</h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInstanceModal">
+                <i class="fas fa-plus"></i> Add New Instance
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Duration</th>
+                        <th>Backlink</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="instance-list">
+                    <!-- Instances will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Instance Modal -->
+    <div class="modal fade" id="addInstanceModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Instance</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-instance-form">
+                        <div class="mb-3">
+                            <label for="add-instance-name" class="form-label">Instance Name</label>
+                            <input type="text" class="form-control" id="add-instance-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-instance-id" class="form-label">Instance ID</label>
+                            <input type="text" class="form-control" id="add-instance-id" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-duration" class="form-label">Session Duration (seconds)</label>
+                            <input type="number" class="form-control" id="add-duration" value="30" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-backlink" class="form-label">Backlink URL</label>
+                            <input type="text" class="form-control" id="add-backlink" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-title" class="form-label">Custom Title</label>
+                            <input type="text" class="form-control" id="add-title" placeholder="Welcome to the Queue">
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-paragraph" class="form-label">Custom Paragraph</label>
+                            <textarea class="form-control" id="add-paragraph" rows="3" placeholder="You are now in the queue. Please wait for your turn."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Instance Modal -->
+    <div class="modal fade" id="editInstanceModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Instance</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-instance-form">
+                        <input type="hidden" id="edit-instance-original-id">
+                        <div class="mb-3">
+                            <label for="edit-instance-name" class="form-label">Instance Name</label>
+                            <input type="text" class="form-control" id="edit-instance-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-instance-id" class="form-label">Instance ID</label>
+                            <input type="text" class="form-control" id="edit-instance-id" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-duration" class="form-label">Session Duration (seconds)</label>
+                            <input type="number" class="form-control" id="edit-duration" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-backlink" class="form-label">Backlink URL</label>
+                            <input type="text" class="form-control" id="edit-backlink" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-title" class="form-label">Custom Title</label>
+                            <input type="text" class="form-control" id="edit-title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-paragraph" class="form-label">Custom Paragraph</label>
+                            <textarea class="form-control" id="edit-paragraph" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
