@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>
                             <button class="btn btn-sm btn-warning me-2" onclick="openEditModal('${inst.id}')"><i class="fas fa-edit"></i></button>
                             <button class="btn btn-sm btn-info me-2" onclick="viewGraph('${inst.id}')"><i class="fas fa-chart-bar"></i></button>
+                            <button class="btn btn-sm btn-primary me-2" onclick="openTestPage('${inst.id}')"><i class="fas fa-vial"></i> Test</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteInstance('${inst.id}')"><i class="fas fa-trash"></i></button>
                         </td>
                     `;
@@ -204,6 +205,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.viewGraph = (id) => {
         window.location.href = `/graph?instanceId=${id}`;
+    };
+
+    window.openTestPage = (id) => {
+        window.location.href = `/test.html?instanceId=${id}`;
     };
 
     window.deleteInstance = (id) => {

@@ -86,6 +86,16 @@ app.get('/api/instances', isAuthenticated, (req, res) => {
     res.json(instancesWithStatus);
 });
 
+app.get('/api/instances/:id', isAuthenticated, (req, res) => {
+    const instances = readInstances();
+    const instance = instances.find(inst => inst.id === req.params.id);
+    if (instance) {
+        res.json(instance);
+    } else {
+        res.status(404).send('Instance not found');
+    }
+});
+
 app.post('/api/instances', (req, res) => {
     const instances = readInstances();
     const newInstance = {
@@ -99,6 +109,41 @@ app.post('/api/instances', (req, res) => {
     instances.push(newInstance);
     writeInstances(instances);
     res.status(201).json(newInstance);
+});
+
+app.post('/api/instances', (req, res) => {
+    const instances = readInstances();
+    const newInstance = {
+        name: req.body.name,
+        id: req.body.id,
+        duration: parseInt(req.body.duration, 10) * 1000, // convert to ms
+        backlink: req.body.backlink,
+        title: req.body.title || 'Welcome to the Queue',
+        paragraph: req.body.paragraph || 'You are now in the queue. Please wait for your turn.',
+    };
+    instances.push(newInstance);
+    writeInstances(instances);
+    res.status(201).json(newInstance);
+});
+
+// API for single test
+app.get('/api/test', isAuthenticated, (req, res) => {
+    const test = readTest();
+    if (test) {
+        res.json(test);
+    } else {
+        res.status(404).send('No test saved');
+    }
+});
+
+app.post('/api/test', isAuthenticated, (req, res) => {
+    const testData = {
+        name: req.body.name,
+        instanceId: req.body.instanceId,
+        tabs: req.body.tabs,
+    };
+    writeTest(testData);
+    res.status(201).json(testData);
 });
 
 app.put('/api/instances/:id', (req, res) => {
@@ -183,6 +228,11 @@ app.get('/join/:instanceId', (req, res) => {
     queues[instanceId] = queue;
 });
 
+app.get('/callback', (req, res) => {
+    console.log('Callback received for instance:', req.query.instanceId, 'with data:', req.query);
+    res.status(200).send('Callback received');
+});
+
 app.post('/api/queue-event', (req, res) => {
     const { instanceId, timestamp } = req.body;
     if (!instanceId || !timestamp) {
@@ -194,8 +244,14 @@ app.post('/api/queue-event', (req, res) => {
 
     fs.readFile(filePath, (err, data) => {
         let queueEvents = [];
-        if (!err) {
-            queueEvents = JSON.parse(data);
+        if (!err && data.length > 0) {
+            try {
+                queueEvents = JSON.parse(data);
+            } catch (parseError) {
+                console.error('Error parsing queue event file:', parseError);
+                // Optionally, you might want to return an error or handle it differently
+                // For now, we'll proceed with an empty array if parsing fails
+            }
         }
         queueEvents.push({ instanceId, timestamp });
         fs.writeFile(filePath, JSON.stringify(queueEvents, null, 2), (err) => {
@@ -226,6 +282,10 @@ app.get('/api/queue-data/:date', (req, res) => {
 
 app.get('/graph', (req, res) => {
     res.sendFile(path.join(__dirname, 'graph.html'));
+});
+
+app.get('/test.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'test.html'));
 });
 
 app.get('/:instanceId', (req, res) => {

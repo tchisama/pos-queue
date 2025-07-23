@@ -2,7 +2,7 @@
   {
     "name": "Akses",
     "id": "akses",
-    "duration": 30000,
+    "duration": 0,
     "backlink": "http://52.188.195.31:8069/pos/ui?config_id={id}",
     "title": "",
     "paragraph": ""
