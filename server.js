@@ -1,4 +1,6 @@
+require('dotenv').config();
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const fs = require('fs');
 const moment = require('moment');
@@ -29,11 +31,48 @@ const writeInstances = (instances) => {
 app.use(express.json());
 app.use(express.static(__dirname));
 
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'supersecretkey',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false } // Set to true if using HTTPS
+}));
+
+// Authentication middleware
+const isAuthenticated = (req, res, next) => {
+    if (req.session.isAuthenticated) {
+        next();
+    } else {
+        res.status(401).send('Unauthorized');
+    }
+};
+
+// Login route
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    if (username === process.env.USER && password === process.env.PASSWORD) {
+        req.session.isAuthenticated = true;
+        res.json({ success: true });
+    } else {
+        res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+});
+
+// Logout route
+app.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).send('Could not log out.');
+        }
+        res.send('Logged out successfully.');
+    });
+});
+
 app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'dashboard.html'));
 });
 
-app.get('/api/instances', (req, res) => {
+app.get('/api/instances', isAuthenticated, (req, res) => {
     const instances = readInstances();
     const instancesWithStatus = instances.map(inst => {
         const queue = queues[inst.id] || [];
