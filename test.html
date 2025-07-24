@@ -11,9 +11,13 @@
 <body>
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Test Page for Instance: <span id="instance-id-display"></span></h1>
-            <div>
-                <button id="run-test-button" class="btn btn-success me-2"><i class="fas fa-play"></i> Run Test</button>
+            <h1><span id="instance-id-display"></span></h1>
+            <div class="d-flex">
+                <div class="btn-group me-2" role="group" aria-label="Test Actions">
+                    <button id="run-test-button" class="btn btn-success"><i class="fas fa-play"></i> Run Test</button>
+                    <button id="save-config-button" class="btn btn-primary"><i class="fas fa-save"></i> Save Config</button>
+                    <button id="upload-config-button" class="btn btn-info"><i class="fas fa-upload"></i> Upload Config</button>
+                </div>
                 <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
             </div>
         </div>

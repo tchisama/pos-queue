@@ -5,12 +5,12 @@
     "duration": 25000,
     "backlink": "http://52.188.195.31:8069/pos/ui?config_id={id}&redirect=1",
     "title": "",
-    "paragraph": ""
+    "paragraph": "Please do not close this window until it redirects you."
   },
   {
     "name": "tchidash",
     "id": "2",
-    "duration": 100000,
+    "duration": 2000,
     "backlink": "https://tchidash.com/?{id}",
     "title": "Welcome to the Queue",
     "paragraph": "You are now in the queue. Please wait for your turn."
