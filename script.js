@@ -10,10 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const queryString = window.location.search;
 
     // Fetch instance details to get custom title and paragraph
-    fetch(`/api/instances`)
+    fetch(`/api/instances/${instanceId}`)
         .then(response => response.json())
-        .then(instances => {
-            const instance = instances.find(inst => inst.id === instanceId);
+        .then(instance => {
             if (instance) {
                 customTitleElement.textContent = instance.title || 'Welcome to the Queue';
                 customParagraphElement.textContent = instance.paragraph || 'You are now in the queue. Please wait for your turn.';

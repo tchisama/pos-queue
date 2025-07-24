@@ -86,7 +86,7 @@ app.get('/api/instances', isAuthenticated, (req, res) => {
     res.json(instancesWithStatus);
 });
 
-app.get('/api/instances/:id', isAuthenticated, (req, res) => {
+app.get('/api/instances/:id', (req, res) => {
     const instances = readInstances();
     const instance = instances.find(inst => inst.id === req.params.id);
     if (instance) {
