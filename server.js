@@ -8,7 +8,7 @@ const moment = require('moment');
 const QUEUE_DB_DIR = path.join(__dirname, 'queueDB');
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 const DB_PATH = path.join(__dirname, 'db.json');
 
